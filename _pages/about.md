@@ -5,7 +5,7 @@ author: "Lenin Kumar"
 permalink: /about/
 ---
 <p align="center">
-<img src="/assets/Images/about/about.jpg" alt="Architecture">
+<img src="/assets/images/about/about.jpg" alt="Architecture">
 </p>
 
 I am Lenin. I did my Masters from IIT Madras. I am currently Software Engineer in PayPal. 
