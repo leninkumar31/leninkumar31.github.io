@@ -1,19 +1,17 @@
 # Site settings
-title:          Tale
-description:    "Minimal Jekyll theme for storytellers"
+title:          Lenin's Blog
+description:    "I write about anything that fascinates me"
 url:            "https://leninkumar31.github.io"
-
-# Google Analytics
-google_analytics: UA—XXXXXXXX-X
 
 # Author
 author:
-  name:         Chester How
-  url:          https://chester.how
-  email:        chesterhow@gmail.com
+  name:         Lenin Kumar Pothabattula
+  url:          https://www.linkedin.com/in/leninkumar-pothabattula/
+  email:        leninkumarpothabattula@gmail.com
 
 # Build settings
 markdown:       kramdown
+mathjax:        true
 include:
   - _pages
 
