@@ -9,7 +9,7 @@ permalink: /about/
 </p>
 
 
-   I am Lenin. I completed my Masters from IIT Madras in 2017. I am currently working in PayPal as Software Engineer. 
+   I am Lenin (Left one in the picture is me). I completed my Masters from IIT Madras in 2017. I am currently working in PayPal as Software Engineer. 
 
 
 Here i write about anything that interests me.
