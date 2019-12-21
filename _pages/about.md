@@ -19,7 +19,6 @@ You can contact me in the below social media
 * [Twitter](https://twitter.com/leninkumar31)
 
 
-If you have any questions or suggestions, feel free to ask me at leninkumarpothabattula@gmail.com.
-
+  If you have any questions or suggestions, feel free to ask me at leninkumarpothabattula@gmail.com.
 
 Thanks for reading!
