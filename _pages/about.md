@@ -4,9 +4,9 @@ title: "About"
 author: "Lenin Kumar"
 permalink: /about/
 ---
-<p align="center">
+<!-- <p align="center">
     <img src="/assets/images/about/about.jpg" alt="Architecture">
-</p>
+</p> -->
 
 
    I am Lenin. I completed my Masters from IIT Madras in 2017. After college i joined PayPal as software Engineer. In PayPal, i worked on Java backend services which talks to one of PayPal's highly scalable and available database. During that time i learned lot about Sharding and Indexing. Currently i am working in Fanatics. Here i am writing GoLang services.
