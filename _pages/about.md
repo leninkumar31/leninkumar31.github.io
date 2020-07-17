@@ -13,13 +13,11 @@ permalink: /about/
 
    My interests includes GoLang, Java, Databases, Reinforcement Learning and Distributed systems
 
-<dl>
-  <dt><strong>TODO</strong></dt>
-  <dd>- Blog post on Rate limiting</dd>
-  <dd>- Custom Retry Mechanism in RabbitMQ</dd>
-  <dd>- Altering table in MySQL using Percona Toolkit</dd>
-  <dd>- Merging two different git repos into single new repo without losing commit history</dd>
-</dl>
+### TODO
+  - Blog post on Rate limiting
+  - Custom Retry Mechanism in RabbitMQ
+  - Altering table in MySQL using Percona Toolkit
+  - Merging two different git repos into single new repo without losing commit history
 
 Here i write about anything that interests me.
 
