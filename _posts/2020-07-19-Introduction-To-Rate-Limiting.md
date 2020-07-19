@@ -6,7 +6,7 @@ title:  Introduction to Rate Limiting
   Have you ever wondered how some websites protect themselves from [DDoS attacks](https://en.wikipedia.org/wiki/Denial-of-service_attack) or why we get status code [HTTP 429](https://tools.ietf.org/html/rfc6585#section-4) in response to calling some API (Ex: [GitHubAPI](https://developer.github.com/v3/)) too many times. The solution behind them is Rate limiting.
 
 ## What is Rate Limiting?
-   Rate limiting is used to control the amount of incoming traffic to a service or an API. For example, an API limits 100 requests per user in an hour using a Rate Limiter. If you send more than 100 requests then you will recieve [TooManyRequests](https://tools.ietf.org/html/rfc6585#section-4) error. This way it can control incoming traffic as well as can mitigate the DDoS attacks.
+   Rate limiting is used to control the amount of incoming traffic to a service or an API. For example, an API limits 100 requests per user in an hour using a Rate Limiter. If you send more than 100 requests then you will recieve [TooManyRequests](https://tools.ietf.org/html/rfc6585#section-4) error. This way it controls incoming traffic as well as mitigates the DDoS attacks.
 
 ## Types of Rate Limiting
 1. **Server level Rate Limiting**
