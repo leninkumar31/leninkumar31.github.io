@@ -139,7 +139,7 @@ In this post, we will be discussing more about API level Rate limiting using GoL
         wg.Wait()
       }
     {% endhighlight %}
-  Result of running the above code can be seen in the below image. First Go Routine was able to access the token and remaining Go Routines failed to access because only one token is available at that second.  
+  Result of running the above code can be seen in the below image. First Go Routine was able to access the token and remaining Go Routines failed to access because only one token was available at that second.  
   <p align="center">
   <img src="/assets/images/RateLimiter/TokenBucketOutput.png" alt="Architecture">
   </p>  
