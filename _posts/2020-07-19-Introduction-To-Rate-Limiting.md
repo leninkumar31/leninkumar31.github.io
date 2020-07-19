@@ -78,67 +78,67 @@ In this post, we will be discussing more about API level Rate limiting using GoL
 
 ## How Token Bucket Algorithm works?
   - Let's define a struct `TokenBucket` with `Rate`, `Burst` and `Available` as parameters.
-    {% highlight golang linenos %}
-      // Burst is the maximum number of tokens can be present in bucket
-      // Rate is the number of tokens to be added per sec to the bucket
-      // Available is the number of tokens currently available in the bucket
-      type TokenBucket struct {
-        Rate      int
-        Burst     int
-        Available int
-        mu        sync.RWMutex
-      }
-    {% endhighlight %}
+  {% highlight golang linenos %}
+  // Burst is the maximum number of tokens can be present in bucket
+  // Rate is the number of tokens to be added per sec to the bucket
+  // Available is the number of tokens currently available in the bucket
+  type TokenBucket struct {
+    Rate      int
+    Burst     int
+    Available int
+    mu        sync.RWMutex
+  }
+  {% endhighlight %}
   <p align="center">
     <img src="/assets/images/RateLimiter/TokenBucket.png" alt="Architecture">
   </p>
   - `Fill` method fills the bucket with `Rate` tokens every second
-      {% highlight golang linenos %}
-        func (tokenBucket *TokenBucket) Fill() {
-          ticker := time.NewTicker(time.Second)
-          for range ticker.C {
-            tokenBucket.mu.Lock()
-            defer tokenBucket.mu.Unlock()
-            tokenBucket.Available = max(tokenBucket.Burst, tokenBucket.Available+tokenBucket.Rate)
-          }
-        }
-      {% endhighlight %}
+  {% highlight golang linenos %}
+  func (tokenBucket *TokenBucket) Fill() {
+    ticker := time.NewTicker(time.Second)
+    for range ticker.C {
+      tokenBucket.mu.Lock()
+      defer tokenBucket.mu.Unlock()
+      tokenBucket.Available = max(tokenBucket.Burst, tokenBucket.Available+tokenBucket.Rate)
+    }
+  }
+  {% endhighlight %}
   - `Take` method reduces the available tokens by one and returns true if there are any available tokens
-    {% highlight golang linenos %}
-      func (tokenBucket *TokenBucket) Take() bool {
-        tokenBucket.mu.Lock()
-        defer tokenBucket.mu.Unlock()
-        if tokenBucket.Available > 0 {
-          tokenBucket.Available--
-          return true
-        }
-        return false
-      }
-    {% endhighlight %}
+  {% highlight golang linenos %}
+  func (tokenBucket *TokenBucket) Take() bool {
+    tokenBucket.mu.Lock()
+    defer tokenBucket.mu.Unlock()
+    if tokenBucket.Available > 0 {
+      tokenBucket.Available--
+      return true
+    }
+    return false
+  }
+  {% endhighlight %}
   - In the below code snippet, at `line 7` TokenBucket is created with burst and rate equal to 1. `line 9` to `line 19` spawns five Go Routines and each tries to access the token.
-    {% highlight golang linenos %}
-      package main
-      import (
-        "fmt"
-        "sync"
-      )
-      func main() {
-        tokenBucket := NewTokenBucket(1, 1)
-        var wg sync.WaitGroup
-        for i := 0; i < 5; i++ {
-          wg.Add(1)
-          go func(wg *sync.WaitGroup) {
-            defer wg.Done()
-            if tokenBucket.Take() {
-              fmt.Println("Available")
-            } else {
-              fmt.Println("Not Available")
-            }
-          }(&wg)
+  {% highlight golang linenos %}
+  package main
+  import (
+    "fmt"
+    "sync"
+  )
+  func main() {
+    tokenBucket := NewTokenBucket(1, 1)
+    var wg sync.WaitGroup
+    for i := 0; i < 5; i++ {
+      wg.Add(1)
+      go func(wg *sync.WaitGroup) {
+        defer wg.Done()
+        if tokenBucket.Take() {
+          fmt.Println("Available")
+        } else {
+          fmt.Println("Not Available")
         }
-        wg.Wait()
-      }
-    {% endhighlight %}
+      }(&wg)
+    }
+    wg.Wait()
+  }
+  {% endhighlight %}
   Result of running the above code can be seen in the below image. First Go Routine was able to access the token and remaining Go Routines failed to access because only one token was available at that second.  
   <p align="center">
   <img src="/assets/images/RateLimiter/TokenBucketOutput.png" alt="Architecture">
