@@ -14,7 +14,7 @@ permalink: /about/
    My interests includes GoLang, Java, Databases, Reinforcement Learning and Distributed systems
 
 ### TODO
-  - Blog post on Rate limiting
+  - ~~Blog post on Rate limiting~~ [Link to post](https://leninkumar31.github.io/2020-07-19/Introduction-To-Rate-Limiting)
   - Custom Retry Mechanism in RabbitMQ
   - Altering table in MySQL using Percona Toolkit
   - Merging two different git repos into single new repo without losing commit history
