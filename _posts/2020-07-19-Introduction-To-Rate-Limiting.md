@@ -69,7 +69,7 @@ In this post, we will be discussing more about API level Rate limiting using GoL
   }
   {% endhighlight %}
 
-  At `line 8`, we first created a global instance of Limiter by calling NewLimiter with rate and burst equal to one. The `ratelimit` method accepts `helloHandler` as parameter and returns a new `http.HandlerFunc`. At line `line 12`, new handler checks whether the request should be processed or not. If not, it will respond with status code `http.StatusTooManyRequests` else it proceeds.
+  At `line 8`, we first created a global instance of Limiter by calling NewLimiter with rate and burst equal to one. The `ratelimit` method accepts `helloHandler` as parameter and returns a new `http.HandlerFunc`. At `line 12`, new handler checks whether the request should be processed or not. If not, it will respond with status code `http.StatusTooManyRequests` else it proceeds.
 
 ## How Token Bucket Algorithm works?
   - Let's define a struct `TokenBucket` with `Rate`, `Burst` and `Available` as parameters.
