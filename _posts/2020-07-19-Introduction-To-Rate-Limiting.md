@@ -19,11 +19,11 @@ title:  Introduction to Rate Limiting
   - Every request will be inspected by middleware and it will decide whether the request should be processed or rejected.
   - If the request is rejected by middleware, API sends response with status code [HTTP 429](https://tools.ietf.org/html/rfc6585#section-4).
    
-In this post, we will be discussing more about API level Rate limiting.
+In this post, we will be discussing more about API level Rate limiting using GoLang.
 
 ## API level Rate Limiting
-  Lets understand API level Rate Limiting by implementing simple Rate Limiter which accepts one request per sec as middleware on an API end point. 
-  {% highlight golang %}
+  Let's understand API level Rate Limiting by implementing simple Rate Limiter which accepts one request per sec as middleware on an API end point. 
+  {% highlight golang linenos %}
   // main.go
   package main
   import (
@@ -32,7 +32,9 @@ In this post, we will be discussing more about API level Rate limiting.
   )
 
   func main() {
+    // Create New HTTP multiplexer
     mux := http.NewServeMux()
+    // Wrap helloHandler with middleware(ratelimit) 
     mux.HandleFunc("/hello", ratelimit(helloHandler))
     fmt.Println("Server listening at 8888:...")
     http.ListenAndServe(":8888", mux)
@@ -44,8 +46,8 @@ In this post, we will be discussing more about API level Rate limiting.
   {% endhighlight %}
 
   Above code snippet listens at end point `localhost:8888/hello` . We are limiting the number of incoming calls to the endpoint by calling `ratelimit` method before calling `helloHandler`. This `ratelimit` method decides whether the incoming request should be processed or rejected. 
-  Lets implement the `ratelimit` using package [x/time/rate](golang.org/x/time/rate). This package internally implements [Token bucket](https://en.wikipedia.org/wiki/Token_bucket) algorithm which we will discuss in the next section.
-  {% highlight golang %}
+  Let's implement the `ratelimit` using package [x/time/rate](golang.org/x/time/rate). This package internally implements [Token bucket](https://en.wikipedia.org/wiki/Token_bucket) algorithm which we will discuss in the next section.
+  {% highlight golang linenos %}
   // RateLimiter.go
   package main
   import (
@@ -57,6 +59,7 @@ In this post, we will be discussing more about API level Rate limiting.
 
   func ratelimit(next http.HandlerFunc) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
+      // Checking whether request should be processed or not
       if !limiter.Allow() {
         http.Error(w, "Limit on Number requests has Exceeded", http.StatusTooManyRequests)
         return
@@ -66,14 +69,14 @@ In this post, we will be discussing more about API level Rate limiting.
   }
   {% endhighlight %}
 
-  In the above code, we first created a global instance of Limiter by calling NewLimiter with rate and burst equal to one. The `ratelimit` method accepts `helloHandler` as parameter and returns a new `http.HandlerFunc`. New handler first checks whether the request should be processed or not. If not, it will respond with status code `http.StatusTooManyRequests` else it proceeds.
+  At `line 8`, we first created a global instance of Limiter by calling NewLimiter with rate and burst equal to one. The `ratelimit` method accepts `helloHandler` as parameter and returns a new `http.HandlerFunc`. At line `line 12`, new handler checks whether the request should be processed or not. If not, it will respond with status code `http.StatusTooManyRequests` else it proceeds.
 
 ## How Token Bucket Algorithm works?
-  - Lets define a struct `TokenBucket` with `Rate`, `Burst` and `Available` as parameters.
-    {% highlight golang %}
-      /* Burst is the maximum number of tokens can be present in bucket
-         Rate is the number of tokens to be added per sec to the bucket
-         Available is the number of tokens currently available in the bucket*/
+  - Let's define a struct `TokenBucket` with `Rate`, `Burst` and `Available` as parameters.
+    {% highlight golang linenos %}
+      // Burst is the maximum number of tokens can be present in bucket
+      // Rate is the number of tokens to be added per sec to the bucket
+      // Available is the number of tokens currently available in the bucket
       type TokenBucket struct {
         Rate      int
         Burst     int
@@ -82,7 +85,7 @@ In this post, we will be discussing more about API level Rate limiting.
       }
     {% endhighlight %}
   - `Fill` method fills the bucket with `Rate` tokens every second
-      {% highlight golang %}
+      {% highlight golang linenos %}
         func (tokenBucket *TokenBucket) Fill() {
           ticker := time.NewTicker(time.Second)
           for range ticker.C {
@@ -93,7 +96,7 @@ In this post, we will be discussing more about API level Rate limiting.
         }
       {% endhighlight %}
   - `Take` method reduces the available tokens by one and returns true if there are any available tokens
-    {% highlight golang %}
+    {% highlight golang linenos %}
       func (tokenBucket *TokenBucket) Take() bool {
         tokenBucket.mu.Lock()
         defer tokenBucket.mu.Unlock()
@@ -107,12 +110,11 @@ In this post, we will be discussing more about API level Rate limiting.
   Complete implementation for Token Bucket Algorithm is available [here](https://github.com/leninkumar31/GoTutorials/blob/master/TokenBucket/TokenBucket.go)
 ## More Usecases
   - We have discussed the usecase which limits number of requests globally. What if we want to limit number of requests per user?
-    - Hint: In Memory Cache and Invalidating the old entries
+    - Hint: In-Memory Cache and Invalidating the old entries
   - How would you scale the above usecase When there are millions of users?
     - Hint: External cache like Redis or Memcached
 
-## Conclusion
-   In this we dicussed about what is rate limiting, how to apply rate limiting to your APIs and how token bucket algorithm works.
+In conclusion, Rate Limiting helps by securing the APIs from DDoS attacks and also controls incoming traffic.
 
 ## Further Reading
   - [Very Good explanation on Token Bucket Algorithm](https://github.com/vladimir-bukhtoyarov/bucket4j/blob/master/doc-pages/token-bucket-brief-overview.md)
