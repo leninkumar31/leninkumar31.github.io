@@ -71,7 +71,7 @@ In this post, we will be discussing more about API level Rate limiting using GoL
 
   At `line 8`, we first created a global instance of Limiter by calling NewLimiter with rate and burst equal to one. The `ratelimit` method accepts `helloHandler` as parameter and returns a new `http.HandlerFunc`. At `line 12`, new handler checks whether the request should be processed or not. If not, it will respond with status code `http.StatusTooManyRequests` else it proceeds.  
 
-  For example, i ran the above code locally and sent two requests concurrently. One of them failed with the below eror
+  For example, i ran the above code locally and sent two requests concurrently. One of them failed with the below error which is what expected
    <p align="center">
     <img src="/assets/images/RateLimiter/output.png" alt="Architecture">
   </p>  
@@ -115,6 +115,34 @@ In this post, we will be discussing more about API level Rate limiting using GoL
         return false
       }
     {% endhighlight %}
+  - In the below code snippet, at `line 7` TokenBucket is created with burst and rate equal to 1. `line 9` to `line 19` spawns five Go Routines and each tries to access the token.
+    {% highlight golang linenos %}
+      package main
+      import (
+        "fmt"
+        "sync"
+      )
+      func main() {
+        tokenBucket := NewTokenBucket(1, 1)
+        var wg sync.WaitGroup
+        for i := 0; i < 5; i++ {
+          wg.Add(1)
+          go func(wg *sync.WaitGroup) {
+            defer wg.Done()
+            if tokenBucket.Take() {
+              fmt.Println("Available")
+            } else {
+              fmt.Println("Not Available")
+            }
+          }(&wg)
+        }
+        wg.Wait()
+      }
+    {% endhighlight %}
+  Result of the above code can be seen in the below image. First Go Routine was able to access the token and remaining Go Routines failed to access because only one token is available at that second.  
+  <p align="center">
+  <img src="/assets/images/RateLimiter/TokenBucketOutput.png" alt="Architecture">
+  </p>  
   Complete implementation for Token Bucket Algorithm is available [here](https://github.com/leninkumar31/GoTutorials/blob/master/TokenBucket/TokenBucket.go)
 ## More Usecases
   - We have discussed the usecase which limits number of requests globally. What if we want to limit number of requests per user?
