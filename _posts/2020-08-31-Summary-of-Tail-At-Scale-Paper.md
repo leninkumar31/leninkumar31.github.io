@@ -147,8 +147,8 @@ title:  Summary of Tail At Scale Paper
 - **Canary Requests**
     - Some times requests may exercise the untested code path which in turn may cause crashes or longer delays on thousands of servers simultaneously
     - To prevent such scenarios, Google's IR system uses a technique called Canary Requests
-    - In this technique, instead of sending the request to thousands of servers, the root server sends the request to only one server
-    - If the root server receives the successful response from that server, then only it will send the same request all leaf servers
+    - In this technique, instead of sending the request to thousands of servers, the root server sends the request to only one leaf server
+    - If the root server receives the successful response from that server, then only it will send the same request to all leaf servers
     - Canary request adds a small amount of latency because the system waits only for one server to respond 
 
 ## Mutations
