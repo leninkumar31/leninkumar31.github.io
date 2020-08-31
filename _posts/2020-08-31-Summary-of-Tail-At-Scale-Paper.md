@@ -126,7 +126,7 @@ title:  Summary of Tail At Scale Paper
         </p>
         - >It is useful therefore for the client to introduce a small delay of two times the average network message delay (1ms or less in modern data-center networks) between sending the first request and sending the second request
     - **Tied Request Performance on BigTable**
-        - Benchmark tests were run on Idle server and server with a concurrent background job and also data is not cached
+        - Benchmark tests were run on Idle server and server with a concurrent background job
         <p align="center">
         <img src="/assets/images/TailAtScale/benchmarktest.png" alt="Performance on BigTable" width="600" height="250">
         </p>
