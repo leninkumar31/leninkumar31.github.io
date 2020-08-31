@@ -157,7 +157,7 @@ title:  Summary of Tail At Scale Paper
 - What should we do if shadow requests are write requests in case of Latency Induced Probation?
 
 ## Conclusion
-This paper tells us about the importance of tail latency when the size and complexity of the system scale up, causes of the latency variability, and also provided with proven tail tolerant techniques to reduce the overall latency of the system. 
+This paper tells us about the importance of tail latency when the size and complexity of the system scale up, about the causes of the latency variability, and also provided with proven tail tolerant techniques to reduce the overall latency of the system. 
 
 ## References
 - [Tail At Scale Original Paper](http://www.cs.duke.edu/courses/cps296.4/fall13/838-CloudPapers/dean_longtail.pdf)
