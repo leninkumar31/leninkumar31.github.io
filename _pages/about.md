@@ -15,9 +15,8 @@ permalink: /about/
 
 ### TODO
   - ~~Blog post on Rate limiting~~ [Link to post](https://leninkumar31.github.io/2020-07-19/Introduction-To-Rate-Limiting)
+  - ~~Summary of Tail At Scale Paper~~ [Link to post](https://leninkumar31.github.io/2020-08-31/Summary-of-Tail-At-Scale-Paper)
   - Custom Retry Mechanism in RabbitMQ
-  - Altering table in MySQL using Percona Toolkit
-  - Merging two different git repos into single new repo without losing commit history
 
 Here i write about anything that interests me.
 
