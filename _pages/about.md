@@ -13,10 +13,9 @@ permalink: /about/
 
    My interests includes GoLang, Java, Databases, Reinforcement Learning and Distributed systems
 
-### TODO
-  - ~~Blog post on Rate limiting~~ [Link to post](https://leninkumar31.github.io/2020-07-19/Introduction-To-Rate-Limiting)
-  - ~~Summary of Tail At Scale Paper~~ [Link to post](https://leninkumar31.github.io/2020-08-31/Summary-of-Tail-At-Scale-Paper)
-  - Custom Retry Mechanism in RabbitMQ
+### Reading List
+  - ~~Tail At Scale~~ [Link to post](https://leninkumar31.github.io/2020-08-31/Summary-of-Tail-At-Scale-Paper)
+  - ~~Time, Clocks and the Ordering of Events in Distributed Systems~~ [Link to post](https://leninkumar31.github.io/2021-02-26/Time-Clocks-And-Ordering-of-Events-in-Distributed-Systems)
 
 Here i write about anything that interests me.
 
