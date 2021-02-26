@@ -34,7 +34,7 @@ In real life, we can say that an event $$a$$ happened before event $$b$$ if time
 ## Partial Order
 Lamport defined the distributed system more precisely as follows:
 - It consists of multiple processes and each process contains a sequence of events.
-- Process Executing something(Ex: machine instruction, a subprogram, etc.) can be treated as an event.
+- Process executing something(Ex: machine instruction, a subprogram, etc.) can be treated as an event.
 - [Total ordering](https://en.wikipedia.org/wiki/Total_order) is satisfied among the set of events in a single process.
 - A process can send a message to another process or receive a message from other processes. They are also events.
 
