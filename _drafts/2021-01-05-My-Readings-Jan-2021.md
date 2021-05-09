@@ -20,7 +20,7 @@ To resolve the availability issues, they decided to replace Celery and RabbitMQ 
 
 Their strategy includes providing minimum viable product(MVP) to hit the ground running, reduce the challenges in developer adoption and incremental rollout with zero downtime.
 
-- **Problem they faced after switching to Kafka**
+- **Problems they faced after switching to Kafka**
     - **Head of line blocking**
         - This happens when processing of the message in the front of the partition is taking long, other messages has to wait which will cause unnecessary delays.
         - This can be resolved by using load balancing in single process. We use [this](https://github.com/JonCSykes/tightrope) GoLang library to avoid head of line blocking. 
