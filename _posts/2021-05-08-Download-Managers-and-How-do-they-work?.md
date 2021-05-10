@@ -2,9 +2,9 @@
 layout: post
 title:  Download managers and How do they work?
 ---
-Have you ever wondered how web browsers download anything from the internet? Similarly, imagine a scenario in which an application wants to download a large file (Zip file, Video, etc.) from an URL during its execution and perform some operations on the downloaded file. Recently, I encountered this problem while working on a GoLang application.
+Have you ever wondered how web browsers download anything from the internet? Imagine a scenario in which an application wants to download a large file (Zip file, Video, etc.) from an URL during its execution and perform some operations on the downloaded file. Recently, I encountered this problem while working on a GoLang application.
 
-I wanted a solution that should save the downloaded file to a given file location, resume the download after connection failure, and keep track of the download progress. I was in a bit of a hurry to complete my task. So, I decided to use an open-source library ([grab](https://github.com/cavaliercoder/grab)) which satisfies the above requirements and supports some more.
+I wanted a solution that can save the downloaded file to a given file location, resume the download after connection failure, and keep track of the download progress. I was in a bit of a hurry to complete my task, so I decided to use an open-source library ([grab](https://github.com/cavaliercoder/grab)) which satisfies the above requirements and supports some more.
 
 This blog post is a step-by-step explanation of the internal workings of a download manager like [grab](https://github.com/cavaliercoder/grab).
 
@@ -50,7 +50,7 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
 ## Step#3 - Determine the name of the downloadable file
 - [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) is the header that indicates whether the content is an attachment or not. If it is an attachment, the filename will present in the header as follows: `Content-Disposition: attachment; filename="filename.jpg"`. 
 - If the above step doesn't work, we should try to extract the filename from the given URL if it exists. 
-    - In filename is present in the URL, then it is the last element in the given URL. 
+    - If filename is present in the URL, then it is the last element in the given URL. 
     - `gobook.pdf` is the name of the file in the given URL(http://www.golang-book.com/public/pdf/gobook.pdf).
 - If we still can't figure out the filename from the above steps, then return an error with the following message(`filename can't be determined`).
 
@@ -78,7 +78,7 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
 
 ## Step#5 - Decide whether to download from scratch or resume a partial download
 - Check whether the downloadable file identified in Step#3 exists or not at the given location. 
-- If it doesn't present
+- If it isn't present
     - We have to start the download from the beginning by sending the GET request to the given URL.
     - If the request is successful, we will receive [200 OK](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200).
 - If it is present
