@@ -2,7 +2,7 @@
 layout: post
 title:  Download managers and How do they work?
 ---
-Have you ever wondered how web browsers download anything from the internet? Imagine a scenario in which an application wants to download a large file (Zip file, Video, etc.) from an URL during its execution and perform some operations on the downloaded file. Recently, I encountered this problem while working on a GoLang application.
+Have you ever wondered how web browsers download anything from the internet? Imagine a scenario in which an application wants to download a large file (Zip file, Video, etc.) from a URL during its execution and perform some operations on the downloaded file. Recently, I encountered this problem while working on a GoLang application.
 
 I wanted a solution that can save the downloaded file to a given file location, resume the download after connection failure, and keep track of the download progress. I was in a bit of a hurry to complete my task, so I decided to use an open-source library ([grab](https://github.com/cavaliercoder/grab)) which satisfies the above requirements and supports some more.
 
@@ -48,7 +48,9 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
 </p>
 
 ## Step#3 - Determine the name of the downloadable file
-- [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) is the header that indicates whether the content is an attachment or not. If it is an attachment, the filename will present in the header as follows: `Content-Disposition: attachment; filename="filename.jpg"`. 
+- [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) request may also provide [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) header in the response.
+- [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) is the header that indicates whether the content is expected to be displayed in the web browser(Value of the header is `inline`) or to be downloaded as a file(Value of the header is `attachment; filename="filename.jpg"`). 
+- If `Content-Disposition` header is present and its value is `attachment` then the filename can be extracted from `filename` parameter if it is present.
 - If the above step doesn't work, we should try to extract the filename from the given URL if it exists. 
     - If filename is present in the URL, then it is the last element in the given URL. 
     - `gobook.pdf` is the name of the file in the given URL(http://www.golang-book.com/public/pdf/gobook.pdf).
@@ -128,12 +130,12 @@ func getFileSize(filepath string) (int64, error) {
 ## Step#6 - Copy the data from the response body and write it to the destination file
 - If the destination file doesn't exist already.
     - We already created the destination folder in Step#1 and figured out the filename in Step#3.
-    - In this case, we have to open the file in `os.O_CREATE | os.O_WRONLY` mode.
+    - In this case, we have to open the file in `os.O_CREATE`(create a new file if none exists.) and `os.O_WRONLY`(open the file write-only.) mode.
 - If the destination file already exists
-    - Open the file in `os.O_APPEND | os.O_WRONLY` mode.
+    - In this case, we have to open the file in `os.O_APPEND`(append data to the file when writing.) and `os.O_WRONLY`(open the file write-only.) mode.
     - Seek to the end of the file where append has to begin.
 - Create a temporary buffer of any size(Ex:32 KB) to read the data from response body.
-- Repeat the following steps until we receive `EOF` from response body
+- Repeat the following steps until we receive `EOF`(End of File) from response body.
     - Read the data from response body to the temporary buffer.
     - Write the data from the buffer to the destination file.
     - Increase the number of bytes written atomically which can be used to track the progress in main file.
