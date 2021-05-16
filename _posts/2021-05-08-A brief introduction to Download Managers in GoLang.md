@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Download managers and How do they work?
+title:  A brief introduction to Download Managers in GoLang
 ---
 Have you ever wondered how web browsers download anything from the internet? Imagine a scenario in which an application wants to download a large file (Zip file, Video, etc.) from a URL during its execution and perform some operations on the downloaded file. Recently, I encountered this problem while working on a GoLang application.
 
@@ -208,3 +208,7 @@ func copyFile(filepath string, resp *http.Response) error {
 
 ## Conclusion
 In this blog post, we have taken a quick look at the internals of a download manager. We also explored some of the `HTTP` features like [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) method and headers like [Content-Length](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length), [Accept-Ranges](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges), [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition), [Digest](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest), and [Range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range) which we don't frequently use in our day to day work. 
+
+
+
+<a href="https://twitter.com/leninkumar35?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @leninkumar35</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
