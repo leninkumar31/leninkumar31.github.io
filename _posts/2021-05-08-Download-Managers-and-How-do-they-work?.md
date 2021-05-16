@@ -75,8 +75,9 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
  {% endhighlight %}
 
 ## Step#4 - Save the checksum and digest algorithm
-- Save the checksum and the digest algorithm from [Digest](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest) header if it is present.
-- We can use this data to verify the correctness of the downloaded file in Step#7.
+- If we are not using a secure(`HTTPS`) connection, it is possible that the downloadable file can be changed by any middleman.
+- We can use the checksum and the digest algorithm from [Digest](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest) header to verify whether data from the server is the same as the data received by the client. 
+- Let's save the checksum and the digest algorithm from [Digest](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest) header if it is present and will use them in Step#7.
 
 ## Step#5 - Decide whether to download from scratch or resume a partial download
 - Check whether the downloadable file identified in Step#3 exists or not at the given location. 
@@ -198,8 +199,8 @@ func copyFile(filepath string, resp *http.Response) error {
 
 ## Step#7 - Compute and Compare the checksum
 - If we are using `HTTPS`, we don't have to compare the checksums because the connection is secure(`TLS`).
-- If we are not using `HTTPS`, we have to calculate the checksum of the downloaded file using the digest algorithm(fetched in Step#2) and compare it with the original checksum(fetched in step#2).
-- If checksums match, the downloaded file is authentic. Otherwise, remove the downloaded file and return an error.
+- If we are not using `HTTPS`, we have to calculate the checksum of the downloaded file using the digest algorithm(retrieved in Step#2) and compare it with the original checksum(retrieved in step#2).
+- If they match, it means the downloaded data is the same as the data on the server. Otherwise, remove the downloaded file and return an error.
 
 ## Additional Improvements
 - Downloading the different parts of the file in parallel can improve the performance.
