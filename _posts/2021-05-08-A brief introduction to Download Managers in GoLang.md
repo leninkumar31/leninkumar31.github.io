@@ -204,7 +204,7 @@ func copyFile(filepath string, resp *http.Response) error {
 - **Note**:
 	- If we are not using a secure connection then it is possible that the middleman might have corrupted both the data(GET request) and the headers(HEAD request). So, comparing checksums is not going to help. Please find the corresponding discussion [here](https://www.linkedin.com/feed/update/urn:li:activity:6799918803502403584?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6799918803502403584%2C6799932222523744256%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A6799918803502403584%2C6799937119671451648%29).
 	- Step#4 and Step#7 might not be useful irrespective of whether we are using the secure or insecure connection but I am gonna keep them since they are good topics to understand.
-	- You can learn about the checksum header [here](https://stackoverflow.com/questions/37640318/checksum-in-http-response-header-why-not).
+	- You can learn more about the checksum header [here](https://stackoverflow.com/questions/37640318/checksum-in-http-response-header-why-not).
 
 ## Additional Improvements
 - Downloading the different parts of the file in parallel can improve the performance.
