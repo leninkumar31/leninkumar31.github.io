@@ -15,7 +15,7 @@ Let's use the following URL:`http://www.golang-book.com/public/pdf/gobook.pdf` a
 - We should give an option to the user to provide the directory/path to store the downloaded file.
 - If the user doesn't provide the directory/path, use the directory where the application code resided.
 - If the given directory doesn't exist, we should create all the missing directories in the path.
- {% highlight golang linenos %}
+```go
     func validateDestPath(destinationPath string) (string, error){
         if destinationPath == "" {
             destinationPath = "."
@@ -31,7 +31,7 @@ Let's use the following URL:`http://www.golang-book.com/public/pdf/gobook.pdf` a
         }
         return destinationPath, nil
     }
- {% endhighlight %}
+ ```
 
 ## Step#2 - Find out the size of the file at the given URL and check whether it supports partial downloads or not
 - An HTTP [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) method is a way to find the size of the file and also to verify the partial downloads support of the destination file without actually downloading it. 
@@ -56,7 +56,7 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
     - `gobook.pdf` is the name of the file in the given URL(http://www.golang-book.com/public/pdf/gobook.pdf).
 - If we still can't figure out the filename from the above steps, then return an error with the following message(`filename can't be determined`).
 
- {% highlight golang linenos %}
+```go
  func guessFilename(resp *http.Response) (string, error) {
 	filename := resp.Request.URL.Path
 	if cd := resp.Header.Get("Content-Disposition"); cd != "" {
@@ -72,7 +72,7 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
 	}
 	return filename, nil
  }
- {% endhighlight %}
+ ```
 
 ## Step#4 - Save the checksum and digest algorithm
 - If we are not using a secure(`HTTPS`) connection, it is possible that the downloadable file can be changed by any middleman.
@@ -90,7 +90,7 @@ Result of the HEAD request for the URL(http://www.golang-book.com/public/pdf/gob
     - If the request is successful, we will receive [206 Partial Content](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/206).
 - In both cases, we have to read the response body and copy it to the destination file.
 
-{% highlight golang linenos %}
+```go
 func sendRequest(filename, URL string) (*http.Response, error) {
 	existingFileSize, err := getFileSize(filename)
 	if err != nil {
@@ -126,7 +126,7 @@ func getFileSize(filepath string) (int64, error) {
 	fileSize = fi.Size()
 	return fileSize, nil
 }
-{% endhighlight %}
+```
 
 ## Step#6 - Copy the data from the response body and write it to the destination file
 - If the destination file doesn't exist already.
@@ -140,7 +140,7 @@ func getFileSize(filepath string) (int64, error) {
     - Read the data from response body to the temporary buffer.
     - Write the data from the buffer to the destination file.
     - Increase the number of bytes written atomically which can be used to track the progress in main file.
-{% highlight golang linenos %}
+```go
 func copyFile(filepath string, resp *http.Response) error {
 	// Set the flag based on the existance of the file
 	flag := os.O_CREATE | os.O_WRONLY
@@ -195,12 +195,16 @@ func copyFile(filepath string, resp *http.Response) error {
 	}
 	return nil
 }
-{% endhighlight %}
+```
 
 ## Step#7 - Compute and Compare the checksum
 - If we are using `HTTPS`, we don't have to compare the checksums because the connection is secure(`TLS`).
 - If we are not using `HTTPS`, we have to calculate the checksum of the downloaded file using the digest algorithm(retrieved in Step#2) and compare it with the original checksum(retrieved in step#2).
 - If they match, it means the downloaded data is the same as the data on the server. Otherwise, remove the downloaded file and return an error.
+- **Note**:
+	- If we are not using a secure connection then it is possible that the middleman might have corrupted both the data(GET request) and the headers(HEAD request). So, comparing checksums is not going to help. Please find the corresponding discussion [here](https://www.linkedin.com/feed/update/urn:li:activity:6799918803502403584?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6799918803502403584%2C6799932222523744256%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A6799918803502403584%2C6799937119671451648%29).
+	- Step#4 and Step#7 might not be useful irrespective of whether we are using the secure or insecure connection but I am gonna keep them since they are good topics to understand.
+	- You can learn about the checksum header [here](https://stackoverflow.com/questions/37640318/checksum-in-http-response-header-why-not).
 
 ## Additional Improvements
 - Downloading the different parts of the file in parallel can improve the performance.
